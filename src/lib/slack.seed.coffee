@@ -88,8 +88,14 @@ class Slack
           response: response
         )
 
-      callback?(err, JSON.parse(response))
-      return
+      try
+        ret = JSON.parse(response)
+      catch
+        return callback(new Error("Invalid server response"),
+          status: "fail"
+          response: response
+        )
+      return callback?(err, ret)
 
     return this
 
